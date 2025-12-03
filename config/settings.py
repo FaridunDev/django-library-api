@@ -120,6 +120,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # ==========================================
 # DATABASE
 # ==========================================
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

@@ -2,7 +2,7 @@ services:
   web:
     build: .
     container_name: django-library-api-web
-    command: python manage.py runserver 0.0.0.0:8000
+    command: ["./wait-for-db.sh", "db", "python", "manage.py", "runserver", "0.0.0.0:8000"]
     volumes:
       - .:/app
     ports:
