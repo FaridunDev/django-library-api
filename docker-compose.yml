@@ -13,15 +13,16 @@ services:
       - DEBUG=True
       - SECRET_KEY=${SECRET_KEY}
 
-  db:
-    image: postgres:14-alpine
-    container_name: django-library-api-db
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    environment:
-      POSTGRES_DB: django_db
-      POSTGRES_USER: django_user
-      POSTGRES_PASSWORD: django_pass
+db:
+  image: postgres:14-alpine
+  container_name: django-library-api-db
+  volumes:
+    - postgres_data:/var/lib/postgresql/data/
+  environment:
+    POSTGRES_DB: library_db
+    POSTGRES_USER: library_user
+    POSTGRES_PASSWORD: admin123
+
 
 volumes:
   postgres_data:
