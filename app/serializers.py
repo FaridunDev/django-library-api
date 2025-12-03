@@ -5,9 +5,6 @@ from django.contrib.auth.password_validation import validate_password
 from .models import Author, Book, Genre, Publisher, Review
 
 
-# =============================
-# User Register & Login
-# =============================
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -17,6 +14,15 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         validate_password(attrs['password'])
         return attrs
+
+    def validate_email(self,value):
+        if not value.endswith('@gmail.com'):
+            raise serializers.ValidationError("Faqat '@gmail.com' bilan tugaydigan elektron pochta manzillariga ruxsat beriladi.")
+            
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Ushbu elektron pochta manzili allaqachon ro'yxatdan o'tgan.")
+            
+        return value
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
@@ -36,9 +42,6 @@ class UserLoginSerializer(serializers.Serializer):
         raise serializers.ValidationError("Kiritilgan ma'lumotlarga mos foydalanuvchi topilmadi.")
 
 
-# =============================
-# 1. Author Serializer
-# =============================
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
@@ -51,27 +54,18 @@ class AuthorSerializer(serializers.ModelSerializer):
         }
 
 
-# =============================
-# 2. Genre Serializer
-# =============================
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = '__all__'
 
 
-# =============================
-# 3. Publisher Serializer
-# =============================
 class PublisherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Publisher
         fields = '__all__'
 
 
-# =============================
-# 4. Book Serializer
-# =============================
 class BookSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(queryset=Author.objects.all())
     publisher = serializers.PrimaryKeyRelatedField(queryset=Publisher.objects.all(), allow_null=True)
@@ -79,7 +73,6 @@ class BookSerializer(serializers.ModelSerializer):
     author_detail = AuthorSerializer(source='author', read_only=True)
     publisher_detail = PublisherSerializer(source='publisher', read_only=True)
     genres_list = GenreSerializer(source='genres', many=True, read_only=True)
-
 
     class Meta:
         model = Book
@@ -94,11 +87,19 @@ class BookSerializer(serializers.ModelSerializer):
             'title': {'required': True},
             'published_date': {'required': False, 'allow_null': True},
         }
+        
+    def validate_author(self, value):
+        if Book.objects.filter(author=value).exists():
+            if self.instance and self.instance.author == value:
+                return value
+            
+            raise serializers.ValidationError(
+                "Bu muallif (Author) allaqachon bitta kitob yozgan. Har bir muallif faqat bitta kitob yarata oladi."
+            )
+            
+        return value
 
 
-# =============================
-# 5. Review Serializer
-# =============================
 class ReviewSerializer(serializers.ModelSerializer):
     book = serializers.PrimaryKeyRelatedField(queryset=Book.objects.all())
     book_title = serializers.CharField(source='book.title', read_only=True)
