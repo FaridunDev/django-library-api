@@ -1,30 +1,39 @@
 from datetime import timedelta
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
-
+# ==========================================
+# BASE DIR & .env yuklash
+# ==========================================
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")  # .env faylni aniq yo'l bilan yuklash
+
+# ==========================================
+# SECURITY
+# ==========================================
+SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = os.getenv("DEBUG", "False").lower() in ["true", "1", "yes"]
 
 
-SECRET_KEY = 'django-insecure-d&9#-g)8a-6ot=r7uv4^ehm7a&cyt2ax$gwvigo4$s^px0#kt$'
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost,0.0.0.0").split(",")
 
 
-DEBUG = True 
-
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-
-
+# ==========================================
+# CACHE
+# ==========================================
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
-        "LOCATION": BASE_DIR / 'cache_files' / 'django_cache', 
-        "TIMEOUT": 300, 
-        "OPTIONS": {
-            "MAX_ENTRIES": 1000 
-        }
+        "LOCATION": BASE_DIR / 'cache_files' / 'django_cache',
+        "TIMEOUT": 300,
+        "OPTIONS": {"MAX_ENTRIES": 1000}
     }
 }
 
-
+# ==========================================
+# INSTALLED APPS
+# ==========================================
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -34,16 +43,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_framework_simplejwt', 
-    'debug_toolbar', 
-    'app', 
+    'rest_framework_simplejwt',
+    'debug_toolbar',
+    'app',
 ]
 
-
-
+# ==========================================
+# REST FRAMEWORK
+# ==========================================
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 50, 
+    'PAGE_SIZE': 50,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
@@ -53,26 +63,29 @@ REST_FRAMEWORK = {
     ],
 }
 
-
-
+# ==========================================
+# SIMPLE JWT
+# ==========================================
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),     
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),        
-    "ROTATE_REFRESH_TOKENS": True,                      
-    "BLACKLIST_AFTER_ROTATION": True,                   
-    "ALGORITHM": "HS256",                               
-    "SIGNING_KEY": SECRET_KEY,                          
-    "AUTH_HEADER_TYPES": ("Bearer",),                   
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
 
-
+# ==========================================
+# MIDDLEWARE
+# ==========================================
 MIDDLEWARE = [
-    'django.middleware.cache.FetchFromCacheMiddleware', 
-    'django.middleware.gzip.GZipMiddleware', 
+    'django.middleware.cache.FetchFromCacheMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "debug_toolbar.middleware.DebugToolbarMiddleware", 
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -83,7 +96,9 @@ MIDDLEWARE = [
 
 GZIP_MIN_LENGTH = 1024
 
-
+# ==========================================
+# URLS & TEMPLATES
+# ==========================================
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -104,45 +119,41 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+# ==========================================
+# DATABASE
+# ==========================================
+import os
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'library_db',       # Ega: library_user
-        'USER': 'library_user',     # Biz yaratgan foydalanuvchi
-        'PASSWORD': 'admin123',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
     }
 }
 
+# ==========================================
+# PASSWORD VALIDATORS
+# ==========================================
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
+# ==========================================
+# LANGUAGE, TIMEZONE, STATIC
+# ==========================================
 LANGUAGE_CODE = 'uz'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-
 STATIC_URL = 'static/'
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-INTERNAL_IPS = [
-    "127.0.0.1", 
-]
+INTERNAL_IPS = ["127.0.0.1"]
