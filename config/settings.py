@@ -15,7 +15,9 @@ load_dotenv(BASE_DIR / ".env")  # .env faylni aniq yo'l bilan yuklash
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False").lower() in ["true", "1", "yes"]
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
+
 
 # ==========================================
 # CACHE
