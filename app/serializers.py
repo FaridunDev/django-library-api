@@ -18,6 +18,15 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         validate_password(attrs['password'])
         return attrs
 
+    def validate_email(self,value):
+        if not value.endswith('@gmail.com'):
+            raise serializers.ValidationError("Faqat '@gmail.com' bilan tugaydigan elektron pochta manzillariga ruxsat beriladi.")
+            
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Ushbu elektron pochta manzili allaqachon ro'yxatdan o'tgan.")
+            
+        return value
+
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user

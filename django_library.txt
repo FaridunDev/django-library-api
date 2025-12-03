@@ -1,0 +1,33 @@
+# 🚀 Django Multi-Platform  
+**User Management | Blog | Shop**
+
+---
+
+## 🎯 Loyiha Maqsadi
+Ushbu loyiha — professional darajadagi **multi-app Django platformasi** bo‘lib,  
+user management, kontent (blog) va savdo (shop) modullarini o‘z ichiga oladi.  
+**Docker** va **PostgreSQL** orqali loyiha real ish muhitiga tayyorlangan.  
+
+**Maqsadlar:**  
+- Foydalanuvchilarni ro‘yxatdan o‘tkazish va email bilan login qilish  
+- Rollarga asoslangan ruxsatlar (admin, manager, customer)  
+- Profilni boshqarish va parolni tiklash  
+- Blog va savdo modullarini role-based boshqarish  
+- Real backend tizimlarni o‘rganish va portfolio yaratish  
+
+Kelajakda loyiha **full-stack platformaga**, analytics va **CI/CD pipeline** bilan kengaytirilishi mumkin.
+
+---
+
+## ✨ Texnik Ko‘rsatkichlar
+
+| Asosiy Modullar    | Texnik Qamrov (DevOps & DB)           | Sifat va Optimallash (QA & Performance)            |
+|-------------------|--------------------------------------|--------------------------------------------------|
+| **User Management** | 🐳 Docker & Compose: Tez deploy      | 🥇 Unit Testlar: CRUD va Auth to‘liq qoplangan |
+| **Content / Blog**  | 🐘 PostgreSQL                        | ⚡ RESTful API (DRF): Standartlarga mos, tez   |
+| **Shop / Savdo**   | 🔒 JWT & Token Authentication        | ⚙️ select_related & Caching orqali tezlik      |
+
+---
+
+> Ushbu README loyiha haqida **qisqa va aniq** tushuncha beradi,  
+> nafaqat nima qilishi, balki texnologiyalar va optimallash nuqtai nazarini ham ko‘rsatadi.
