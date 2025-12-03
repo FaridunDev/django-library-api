@@ -1,0 +1,14 @@
+# Virtual Muhit
+venv/
+.env
+
+# Django / Python
+*.pyc
+__pycache__/
+db.sqlite3
+/media/
+
+# Docker (Faqat agar ularni GitHub ga yuklamoqchi bo'lmasangiz, aks holda bu qatorni o'chiring)
+.dockerignore
+# Dockerfile
+# docker-compose.yml
